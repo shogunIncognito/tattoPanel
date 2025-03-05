@@ -1,11 +1,11 @@
 <script setup>
-import Spinner from './components/Spinner.vue'
-
+import NavBar from './components/NavBar.vue';
 </script>
 
 <template>
   <div id="app">
-    <router-view class="pt-20">
+    <NavBar />
+    <router-view class="pt-10">
     </router-view>
   </div>
 </template>

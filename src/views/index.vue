@@ -1,15 +1,17 @@
 <script setup>
 import { ref } from 'vue';
-import { BiBrush, BiUser } from 'vue-icons-plus/bi';
+import { BiBrush, BiSolidCommentDetail, BiSolidPen, BiUser } from 'vue-icons-plus/bi';
+import { Fa6Users } from 'vue-icons-plus/fa6';
 import { RiInkBottleFill } from 'vue-icons-plus/ri';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
 const stats = [
-    { title: 'Usuarios', count: 120, icon: BiUser, route: '/admin/usuarios' },
-    { title: 'Tatuadores', count: 45, icon: BiBrush, route: '/dashboard/tattooists' },
-    { title: 'Tatuajes', count: 300, icon: RiInkBottleFill, route: '/admin/tatuajes' }
+    { title: 'Usuarios', count: 120, icon: Fa6Users, route: '/users' },
+    { title: 'Tatuadores', count: 45, icon: BiUser, route: '/tattooists' },
+    { title: 'Tatuajes', count: 300, icon: BiSolidPen, route: '/tattoos' },
+    { title: 'Reseñas', count: 150, icon: BiSolidCommentDetail, route: '/reviews' },
 ];
 
 </script>

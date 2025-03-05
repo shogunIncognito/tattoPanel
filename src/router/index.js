@@ -14,9 +14,27 @@ const routes = [
         component: () => import('../views/auth/login.vue'),
     },
     {
-        path: '/dashboard/tattooists',
+        path: '/tattooists',
         name: 'dashboardTattooists',
         component: () => import('../views/tattooists.vue'),
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/tattoos',
+        name: 'dashboardTattoos',
+        component: () => import('../views/tattoos.vue'),
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/users',
+        name: 'dashboardUsers',
+        component: () => import('../views/users.vue'),
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/reviews',
+        name: 'dashboardReviews',
+        component: () => import('../views/reviews.vue'),
         meta: { requiresAuth: true }
     }
 ];

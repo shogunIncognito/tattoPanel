@@ -1,8 +1,9 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { placeholderUserImage } from '../../utils/consts';
 import { getTattooists } from '../services/api';
+import { placeholderUserImage } from '../utils/consts'
+import BackButton from '../components/BackButton.vue';
 
 const tattooArtists = ref([]);
 
@@ -29,6 +30,7 @@ onMounted(() => {
 
 <template>
     <div class="min-h-screen bg-black text-white p-6">
+        <BackButton />
         <div class="max-w-5xl mx-auto">
             <h1 class="text-3xl font-bold mb-6">Tatuadores</h1>
             <div class="bg-gray-900 p-4 rounded-lg shadow-md">
