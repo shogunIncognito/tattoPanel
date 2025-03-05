@@ -1,10 +1,13 @@
 <script setup>
 import NavBar from './components/NavBar.vue';
+import { useAuthStore } from './store/useAuthStore';
+
+const authStore = useAuthStore();
 </script>
 
 <template>
   <div id="app">
-    <NavBar />
+    <NavBar v-if="authStore.user" />
     <router-view class="pt-10">
     </router-view>
   </div>

@@ -7,9 +7,11 @@ import { FaPenNib } from 'vue-icons-plus/fa';
 
 const authStore = useAuthStore();
 const isMenuOpen = ref(false);
+const router = useRouter();
 
 const logout = () => {
     authStore.deleteSession();
+    router.push('/auth');
     isMenuOpen.value = false;
 };
 </script>

@@ -1,7 +1,8 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { BiUserX } from 'vue-icons-plus/bi';
 import BackButton from '../components/BackButton.vue';
+import { getUsers } from '../services/api';
 
 const users = ref([
     {
@@ -30,6 +31,16 @@ const users = ref([
 const disableUser = (id) => {
     console.log(`User with ID ${id} has been disabled.`);
 };
+
+onMounted(() => {
+    getUsers()
+        .then((res) => {
+            users.value = res.data;
+        })
+        .catch((error) => {
+            console.error('Error fetching users:', error);
+        });
+})
 </script>
 
 <template>
