@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* custom colors with tailwind classes */
+
+@layer components {
+    .text-neon {
+        color: #00e676;
+    }
+
+    .bg-darker {
+        background-color: #1a1a1a;
+    }
+
+    .bg-dark {
+        background-color: #333333;
+    }
+
+    .text-tatto {
+        font-family: "Pirata One", serif;
+        font-size: 38px;
+    }
+
+    .ring-neon {
+        @apply ring-2 ring-green-500/35;
+    }
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Personalización de la barra de desplazamiento */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+/* Fondo de la barra */
+::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 10px;
+}
+
+/* Color de la barra desplazable */
+::-webkit-scrollbar-thumb {
+    background: #00c853;
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+/* Efecto hover en la barra desplazable */
+::-webkit-scrollbar-thumb:hover {
+    background: #03b15d;
+}
+
+/* Para navegadores con scrollbar nativo (Firefox) */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #00c853 #1a1a1a;
+}
