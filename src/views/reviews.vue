@@ -1,63 +1,90 @@
 <script setup>
-import { ref } from 'vue';
-import { BiTrash } from 'vue-icons-plus/bi';
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import { getReviews, getTattooists } from '../services/api';
+import { placeholderUserImage } from '../utils/consts'
 import BackButton from '../components/BackButton.vue';
+import { BiUserX } from 'vue-icons-plus/bi';
+import { IpFileSearch } from 'vue-icons-plus/ip';
+import Spinner from '../components/Spinner.vue';
+import { AiFillStar } from 'vue-icons-plus/ai';
+import { LuUserSearch } from 'vue-icons-plus/lu';
 
-const reviews = ref([
-    {
-        id: 1,
-        user: {
-            name: 'Juan Pérez',
-            email: 'juan.perez@example.com',
-        },
-        comment: '¡Excelente trabajo! Muy profesional.',
-        rating: 5,
-    },
-    {
-        id: 2,
-        user: {
-            name: 'María López',
-            email: 'maria.lopez@example.com',
-        },
-        comment: 'Me gustó mucho el diseño, pero tardó un poco.',
-        rating: 4,
-    },
-]);
+const reviews = ref([]);
+const loading = ref(true);
 
-const deleteReview = (id) => {
-    reviews.value = reviews.value.filter(review => review.id !== id);
+const removeReview = async (id) => {
+    try {
+        await axios.patch(`/api/tattoo-artists/${id}/disable`); // Adjust endpoint
+        const artist = reviews.value.find(artist => artist._id === id);
+        if (artist) artist.isVerified = false;
+    } catch (error) {
+        console.error('Error disabling tattoo artist:', error);
+    }
 };
+
+onMounted(() => {
+    getReviews()
+        .then((res) => {
+            console.log(res.data);
+
+            reviews.value = res.data;
+        })
+        .catch((error) => {
+            console.error('Error fetching tattoo artists:', error);
+        })
+        .finally(() => {
+            loading.value = false;
+        });
+});
 </script>
 
 <template>
-    <div class="p-6 text-white min-h-screen">
+    <div class="p-6 text-white rounded-lg shadow-lg">
         <BackButton />
-        <h1 class="text-2xl font-bold mb-4">Gestión de Reseñas</h1>
-        <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
-            <table class="w-full text-left">
-                <thead>
-                    <tr class="border-b border-gray-700">
-                        <th class="p-2">Usuario</th>
-                        <th class="p-2">Correo</th>
-                        <th class="p-2">Comentario</th>
-                        <th class="p-2">Calificación</th>
-                        <th class="p-2">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="review in reviews" :key="review.id" class="border-b border-gray-700">
-                        <td class="p-2">{{ review.user.name }}</td>
-                        <td class="p-2">{{ review.user.email }}</td>
-                        <td class="p-2">{{ review.comment }}</td>
-                        <td class="p-2">⭐ {{ review.rating }}</td>
-                        <td class="p-2">
-                            <button @click="deleteReview(review.id)" class="text-red-500 hover:text-red-700">
-                                <BiTrash />
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <h2 class="text-2xl font-bold mb-4">Gestionar Reseñas</h2>
+        <div class="bg-gray-900 p-2 rounded-lg shadow-md ring-neon">
+            <div class="overflow-x-auto">
+                <table class="w-full border border-gray-700">
+                    <thead class="bg-gray-800">
+                        <tr>
+                            <th class="p-3 text-left">Nombre de usuario</th>
+                            <th class="p-3 text-left">Comentario</th>
+                            <th class="p-3 text-left">Calificacion</th>
+                            <th class="p-3 text-left">Tatuador</th>
+                            <th class="p-3 text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-if="loading" class="h-[18rem]">
+                            <td colspan="6" class="text-center">
+                                <div class="flex justify-center items-center h-full">
+                                    <Spinner />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr v-else v-for="review in reviews" :key="review._id" class="border-t border-gray-700">
+                            <td class="p-3">{{ review.user.name }}</td>
+                            <td class="p-3">{{ review.comment || '-' }}</td>
+                            <td class="p-3 flex gap-2">
+                                <AiFillStar class="text-yellow-500" />
+                                {{ review.qualification }}
+                            </td>
+                            <td class="p-3">{{ review.tattooArtist.name }}</td>
+                            <td class="p-3 text-center flex gap-2 justify-center">
+                                <button @click="removeReview(review._id)"
+                                    class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded flex items-center gap-2">
+                                    <LuUserSearch /> Ver usuario
+                                </button>
+                                <button @click="removeReview(review._id)"
+                                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded flex items-center gap-2">
+                                    <BiUserX />
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>

@@ -17,7 +17,7 @@ const logout = () => {
 </script>
 
 <template>
-    <nav class="bg-gray-900 text-white p-4 shadow-lg flex justify-between items-center sticky top-0 z-50">
+    <nav class="bg-gray-900 text-white p-4 shadow-lg ring-neon flex justify-between items-center sticky top-0 z-50">
         <div class="text-xl font-bold overflow-hidden whitespace-nowrap text-ellipsis">
             Tattoo <span class="text-neon">Ink</span> - Panel de administración
         </div>

@@ -4,8 +4,12 @@ import axios from 'axios';
 import { getTattooists } from '../services/api';
 import { placeholderUserImage } from '../utils/consts'
 import BackButton from '../components/BackButton.vue';
+import { BiUserX } from 'vue-icons-plus/bi';
+import { IpFileSearch } from 'vue-icons-plus/ip';
+import Spinner from '../components/Spinner.vue';
 
 const tattooArtists = ref([]);
+const loading = ref(true);
 
 const disableTattooArtist = async (id) => {
     try {
@@ -20,48 +24,68 @@ const disableTattooArtist = async (id) => {
 onMounted(() => {
     getTattooists()
         .then((res) => {
+            console.log(res.data);
+
             tattooArtists.value = res.data;
         })
         .catch((error) => {
             console.error('Error fetching tattoo artists:', error);
+        })
+        .finally(() => {
+            loading.value = false;
         });
 });
 </script>
 
 <template>
-    <div class="min-h-screen bg-black text-white p-6">
+    <div class="p-6 text-white rounded-lg shadow-lg">
         <BackButton />
-        <div class="max-w-5xl mx-auto">
-            <h1 class="text-3xl font-bold mb-6">Tatuadores</h1>
-            <div class="bg-gray-900 p-4 rounded-lg shadow-md">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="border-b border-gray-700">
-                            <th class="p-2">Photo</th>
-                            <th class="p-2">Name</th>
-                            <th class="p-2">Specialty</th>
-                            <th class="p-2">Experience</th>
-                            <th class="p-2">Phone</th>
-                            <th class="p-2 text-center">Actions</th>
+        <h2 class="text-2xl font-bold mb-4">Gestionar Tatuadores</h2>
+        <div class="bg-gray-900 p-2 rounded-lg shadow-md ring-neon">
+            <div class="overflow-x-auto">
+                <table class="w-full border border-gray-700">
+                    <thead class="bg-gray-800">
+                        <tr>
+                            <th class="p-3 text-left">Foto</th>
+                            <th class="p-3 text-left">Nombre</th>
+                            <th class="p-3 text-left">Correo</th>
+                            <th class="p-3 text-left">Telefono</th>
+                            <th class="p-3 text-left">Aprobado</th>
+                            <th class="p-3 text-center">Acción</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="artist in tattooArtists" :key="artist._id"
-                            class="border-b border-gray-700 hover:bg-gray-800">
-                            <td class="p-2">
-                                <img :src="artist.photoPerfil?.url || placeholderUserImage" alt="Photo"
-                                    class="w-12 h-12 rounded-full border border-gray-600" />
+                        <tr v-if="loading" class="h-[18rem]">
+                            <td colspan="6" class="text-center">
+                                <div class="flex justify-center items-center h-full">
+                                    <Spinner />
+                                </div>
                             </td>
-                            <td class="p-2">{{ artist.name }}</td>
-                            <td class="p-2">{{ artist.specialty }}</td>
-                            <td class="p-2">{{ artist.experience }}</td>
-                            <td class="p-2">{{ artist.numberPhone }}</td>
-                            <td class="p-2 flex justify-center gap-3">
-                                <button v-if="artist.isVerified" @click="disableTattooArtist(artist._id)"
-                                    class="text-red-400 hover:text-red-300">
-                                    Deshabilitar
+                        </tr>
+                        <tr v-else v-for="tattooist in tattooArtists" :key="tattooist._id"
+                            class="border-t border-gray-700">
+                            <td class="p-3">
+                                <img :src="tattooist.photoPerfil?.url || placeholderUserImage" alt="Foto de perfil"
+                                    class="w-10 h-10 rounded-full">
+                            </td>
+                            <td class="p-3">{{ tattooist.name }}</td>
+                            <td class="p-3">{{ tattooist.email }}</td>
+                            <td class="p-3">{{ tattooist.numberPhone }}</td>
+                            <td class="p-3">
+                                <span
+                                    :class="{ 'text-green-500': tattooist.isVerified, 'text-red-500': !tattooist.isVerified }">
+                                    {{ tattooist.isVerified ? 'Sí' : 'No' }}
+                                </span>
+                            </td>
+                            <td class="p-3 text-center flex gap-2 justify-center">
+                                <button @click="disableTattooArtist(tattooist._id)"
+                                    class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded flex items-center gap-2">
+                                    <IpFileSearch /> Ver tatuajes
                                 </button>
-                                <span v-else class="text-gray-400">Disabled</span>
+                                <button @click="disableTattooArtist(tattooist._id)"
+                                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded flex items-center gap-2">
+                                    <BiUserX /> Deshabilitar
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -70,7 +94,3 @@ onMounted(() => {
         </div>
     </div>
 </template>
-
-<style>
-/* Add animations or custom styles here */
-</style>
