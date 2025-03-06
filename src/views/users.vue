@@ -6,9 +6,11 @@ import { getUsers } from '../services/api';
 import { IpFileSearch } from 'vue-icons-plus/ip';
 import Spinner from '../components/Spinner.vue';
 import { placeholderUserImage } from '../utils/consts'
+import { useRouter } from 'vue-router';
 
 const users = ref([]);
 const loading = ref(true)
+const router = useRouter();
 
 const disableUser = (id) => {
     console.log(`User with ID ${id} has been disabled.`);
@@ -69,7 +71,7 @@ onMounted(() => {
                                 </span>
                             </td>
                             <td class="p-3 text-center flex gap-2 justify-center">
-                                <button @click="disableUser(user._id)"
+                                <button @click="router.push(`/users/${user._id}`)"
                                     class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded flex items-center gap-2">
                                     <IpFileSearch /> Ver reseñas
                                 </button>
