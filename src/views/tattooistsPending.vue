@@ -14,7 +14,7 @@ const loading = ref(true);
 const handleApprove = (id) => {
     toggleTattooistApprobation(id)
         .then(() => {
-            tattooists.value = tattooists.value.filter(t => t.id !== id);
+            tattooists.value = tattooists.value.filter(t => t._id !== id);
             toast.success('Tatuador aprobado correctamente');
         })
         .catch((error) => {

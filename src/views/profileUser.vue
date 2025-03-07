@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { BiTrash, BiUserX } from 'vue-icons-plus/bi';
-import { getUserReviews } from '../services/api';
+import { getUserReviews, toggleUserApprobation } from '../services/api';
 import Spinner from '../components/Spinner.vue';
 import { placeholderUserImage } from '../utils/consts';
 import { useRoute, useRouter } from 'vue-router';
@@ -18,10 +18,10 @@ const route = useRoute();
 const router = useRouter();
 
 const suspendUser = () => {
-    toggleTattooistApprobation(user.value._id)
+    toggleUserApprobation(user.value._id)
         .then(() => {
-            toast.success(`Usuario ${user.value.authorizedArtist ? 'suspendido' : 'aprobado'} correctamente.`);
-            user.value.authorizedArtist = !user.value.authorizedArtist;
+            toast.success(`Usuario ${user.value.isVerified ? 'suspendido' : 'aprobado'} correctamente.`);
+            user.value.isVerified = !user.value.isVerified;
         })
         .catch((error) => {
             console.error('Error suspending user:', error);
@@ -79,9 +79,9 @@ onMounted(() => {
                 </div>
                 <div class="ml-auto flex gap-4">
                     <button @click="suspendUser"
-                        :class="(user.authorizedArtist ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700') + ' px-4 py-2 rounded-lg flex items-center gap-2'">
-                        <span v-if="user.authorizedArtist" class="flex items-center gap-2">
-                            <BiUserX /> Suspender
+                        :class="(user.isVerified ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700') + ' px-4 py-2 rounded-lg flex items-center gap-2'">
+                        <span v-if="user.isVerified" class="flex items-center gap-2">
+                            <BiUserX /> Deshabilitar
                         </span>
                         <span v-else class="flex items-center gap-2">
                             <FaUserCheck /> Aprobar
@@ -92,7 +92,10 @@ onMounted(() => {
         </div>
 
         <h3 class="text-xl font-bold mt-6">Reseñas</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+        <div v-if="reviews.length === 0" class="text-gray-300 mt-4">
+            <p>Este usuario no tiene reseñas.</p>
+        </div>
+        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
             <div v-for="review in reviews" :key="review.id"
                 class="bg-gray-800 flex flex-col p-4 rounded-lg shadow-md ring-neon">
                 <div class="flex items-center gap-4">

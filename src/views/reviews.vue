@@ -1,15 +1,16 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { getReviews, getTattooists } from '../services/api';
+import { deleteReview, getReviews, getTattooists } from '../services/api';
 import { placeholderUserImage } from '../utils/consts'
 import BackButton from '../components/BackButton.vue';
 import { BiUserX } from 'vue-icons-plus/bi';
 import { IpFileSearch } from 'vue-icons-plus/ip';
 import Spinner from '../components/Spinner.vue';
-import { AiFillStar } from 'vue-icons-plus/ai';
+import { AiFillDelete, AiFillStar } from 'vue-icons-plus/ai';
 import { LuUserSearch } from 'vue-icons-plus/lu';
 import { useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
 
 const reviews = ref([]);
 const loading = ref(true);
@@ -17,18 +18,18 @@ const router = useRouter();
 
 const removeReview = async (id) => {
     try {
-        await axios.patch(`/api/tattoo-artists/${id}/disable`); // Adjust endpoint
-        const artist = reviews.value.find(artist => artist._id === id);
-        if (artist) artist.isVerified = false;
+        await deleteReview(id);
+        reviews.value = reviews.value.filter((review) => review._id !== id);
+        toast.success('Reseña eliminada correctamente.');
     } catch (error) {
-        console.error('Error disabling tattoo artist:', error);
+        console.error('Error deleting review:', error);
+        toast.error('Error al eliminar la reseña.');
     }
 };
 
 onMounted(() => {
     getReviews()
         .then((res) => {
-            console.log(res.data);
             reviews.value = res.data;
         })
         .catch((error) => {
@@ -41,7 +42,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="p-6 text-white rounded-lg shadow-lg">
+    <div class="p-6 text-white rounded-lg shadow-lg lg:max-w-[90rem] mx-auto">
         <BackButton />
         <h2 class="text-2xl font-bold mb-4">Gestionar Reseñas</h2>
         <div class="bg-gray-900 p-2 rounded-lg shadow-md ring-neon">
@@ -80,7 +81,7 @@ onMounted(() => {
                                 </button>
                                 <button @click="removeReview(review._id)"
                                     class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded flex items-center gap-2">
-                                    <BiUserX />
+                                    <AiFillDelete />
                                 </button>
                             </td>
                         </tr>

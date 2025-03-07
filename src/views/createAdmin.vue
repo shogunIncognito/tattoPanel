@@ -22,20 +22,22 @@ const addAdmin = () => {
 </script>
 
 <template>
-    <div>
+    <div class="p-4">
         <BackButton />
         <div class="flex items-center min-h-[70dvh] justify-center text-white">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-lg ring-neon w-96">
-                <h2 class="text-2xl font-bold mb-4 text-center">Añadir Administrador</h2>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg ring-neon w-[30rem]">
+                <h2 class="text-2xl font-bold mb-4 text-center">Añadir <span class="text-neon">Administrador</span></h2>
                 <form @submit.prevent="addAdmin" class="space-y-4">
                     <div>
-                        <label for="user" class="block text-sm font-medium">Usuario</label>
+                        <label for="user" class="block text-sm font-bold mb-2">Usuario</label>
                         <input id="user" v-model="user" type="text" required
+                            placeholder="Nombre de usuario del nuevo administrador"
                             class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:border-green-500 focus:outline-none">
                     </div>
                     <div>
-                        <label for="password" class="block text-sm font-medium">Contraseña</label>
+                        <label for="password" class="block text-sm font-bold mb-2">Contraseña</label>
                         <input id="password" v-model="password" type="password" required
+                            placeholder="Contraseña del nuevo administrador"
                             class="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:border-green-500 focus:outline-none">
                     </div>
                     <button type="submit"

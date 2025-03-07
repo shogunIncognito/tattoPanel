@@ -8,6 +8,8 @@ import { BiUserX } from 'vue-icons-plus/bi';
 import { IpFileSearch } from 'vue-icons-plus/ip';
 import Spinner from '../components/Spinner.vue';
 import { useRouter } from 'vue-router';
+import { FaUserCheck } from 'vue-icons-plus/fa';
+import { toast } from 'vue3-toastify';
 
 const tattooArtists = ref([]);
 const loading = ref(true);
@@ -15,8 +17,11 @@ const router = useRouter()
 
 const disableTattooArtist = async (id) => {
     try {
-        await toggleTattooistApprobation(id);
-        if (artist) artist.authorizedArtist = false;
+        const res = await toggleTattooistApprobation(id);
+        const newText = res.data.authorizedArtist ? 'habilitado' : 'suspendido';
+        toast.success(`Tatuador ${newText} correctamente.`);
+        const tattooArtistIndex = tattooArtists.value.findIndex((tattooArtist) => tattooArtist._id === id);
+        tattooArtists.value[tattooArtistIndex].authorizedArtist = !tattooArtists.value[tattooArtistIndex].authorizedArtist;
     } catch (error) {
         console.error('Error disabling tattoo artist:', error);
     }
@@ -25,7 +30,6 @@ const disableTattooArtist = async (id) => {
 onMounted(() => {
     getTattooists()
         .then((res) => {
-            console.log(res.data);
             tattooArtists.value = res.data;
         })
         .catch((error) => {
@@ -38,7 +42,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="p-6 text-white rounded-lg shadow-lg">
+    <div class="p-6 text-white rounded-lg shadow-lg lg:max-w-[90rem] mx-auto">
         <BackButton />
         <h2 class="text-2xl font-bold mb-4">Gestionar Tatuadores</h2>
         <div class="bg-gray-900 p-2 rounded-lg shadow-md ring-neon">
@@ -77,14 +81,19 @@ onMounted(() => {
                                     {{ tattooist.authorizedArtist ? 'Sí' : 'No' }}
                                 </span>
                             </td>
-                            <td class="p-3 text-center flex gap-2 justify-center">
+                            <td class="p-3 text-center flex flex-col lg:grid lg:grid-cols-2 grid-cols-1 gap-2 w-full">
                                 <button @click="router.push(`/tattooists/${tattooist._id}`)"
                                     class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded flex items-center gap-2">
                                     <IpFileSearch /> Ver tatuajes
                                 </button>
                                 <button @click="disableTattooArtist(tattooist._id)"
-                                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded flex items-center gap-2">
-                                    <BiUserX /> Deshabilitar
+                                    :class="(tattooist.authorizedArtist ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700') + ' px-4 py-2 rounded-lg flex items-center gap-2'">
+                                    <span v-if="tattooist.authorizedArtist" class="flex items-center gap-2">
+                                        <BiUserX /> Deshabilitar
+                                    </span>
+                                    <span v-else class="flex items-center gap-2">
+                                        <FaUserCheck /> Habilitar
+                                    </span>
                                 </button>
                             </td>
                         </tr>

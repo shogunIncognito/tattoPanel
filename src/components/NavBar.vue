@@ -2,8 +2,7 @@
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import { useAuthStore } from '../store/useAuthStore';
-import { BiHome, BiLogOut, BiMenu, BiSolidCommentDetail, BiUserPlus } from 'vue-icons-plus/bi';
-import { FaPenNib } from 'vue-icons-plus/fa';
+import { BiLogOut, BiMenu } from 'vue-icons-plus/bi';
 
 const authStore = useAuthStore();
 const isMenuOpen = ref(false);

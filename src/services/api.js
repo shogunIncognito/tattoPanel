@@ -47,14 +47,6 @@ export async function toggleTattooistAccount(id) {
     });
 }
 
-export async function toggleUserAccount(id) {
-    return await API.post(`/users-and-artist/status-user/${id}`, null, {
-        headers: {
-            Authorization: `Bearer ${getToken()}`,
-        },
-    });
-}
-
 // admins
 
 export async function createAdmin(data) {
@@ -138,6 +130,16 @@ export async function getTattooistsToVerify() {
 
 export async function toggleTattooistApprobation(id) {
     return await API.post(`/users-and-artist/status-artist/${id}`, null, {
+        headers: {
+            Authorization: `Bearer ${getToken()}`,
+        },
+    });
+}
+
+// user aprobation
+
+export async function toggleUserApprobation(id) {
+    return await API.post(`/users-and-artist/status-user/${id}`, null, {
         headers: {
             Authorization: `Bearer ${getToken()}`,
         },

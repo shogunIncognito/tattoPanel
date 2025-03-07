@@ -1,26 +1,25 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import { getTattooPosts } from '../services/api';
+import { deleteTattooPost, getTattooPosts } from '../services/api';
 import { placeholderUserImage } from '../utils/consts'
 import BackButton from '../components/BackButton.vue';
-import { BiUserX } from 'vue-icons-plus/bi';
-import { IpFileSearch } from 'vue-icons-plus/ip';
 import Spinner from '../components/Spinner.vue';
-import { AiFillStar } from 'vue-icons-plus/ai';
-import { LuUserSearch } from 'vue-icons-plus/lu';
+import { AiFillDelete } from 'vue-icons-plus/ai';
+import { toast } from 'vue3-toastify';
 
 const tattoos = ref([]);
 const loading = ref(true);
 
-const removeReview = async (id) => {
-    try {
-        await axios.patch(`/api/tattoo-artists/${id}/disable`); // Adjust endpoint
-        const artist = tattoos.value.find(artist => artist._id === id);
-        if (artist) artist.isVerified = false;
-    } catch (error) {
-        console.error('Error disabling tattoo artist:', error);
-    }
+const deleteTattoo = (tattoPostId) => {
+    deleteTattooPost(tattoPostId)
+        .then(() => {
+            toast.success('Tatuaje eliminado correctamente.');
+            tattoos.value = tattoos.value.filter((tattoo) => tattoo._id !== tattoPostId);
+        })
+        .catch((error) => {
+            console.error('Error deleting review:', error);
+            toast.error('Error al eliminar el tatuaje.');
+        });
 };
 
 onMounted(() => {
@@ -39,7 +38,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="p-6 text-white rounded-lg shadow-lg">
+    <div class="p-6 text-white rounded-lg shadow-lg lg:max-w-[90rem] mx-auto">
         <BackButton />
         <h2 class="text-2xl font-bold mb-4">Gestionar Tatuajes</h2>
         <div class="bg-gray-900 p-2 rounded-lg shadow-md ring-neon">
@@ -67,9 +66,9 @@ onMounted(() => {
                             </td>
                             <td class="p-3">{{ tattoo.description || '-' }}</td>
                             <td class="p-3 text-center items-center h-[8rem] flex gap-2 justify-center">
-                                <button @click="removeReview(tattoo._id)"
+                                <button @click="deleteTattoo(tattoo._id)"
                                     class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded flex items-center gap-2">
-                                    <BiUserX /> Eliminar tatuaje
+                                    <AiFillDelete /> Eliminar tatuaje
                                 </button>
                             </td>
                         </tr>

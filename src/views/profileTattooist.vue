@@ -108,7 +108,10 @@ onMounted(() => {
         </div>
 
         <h3 class="text-xl font-bold mt-6">Tatuajes</h3>
-        <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+        <div v-if="tattoos.length === 0" class="text-gray-300 mt-4">
+            <p>Este tatuador no tiene tatuajes.</p>
+        </div>
+        <div v-else class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
             <TattooCard v-for="tattoo in tattoos" :key="tattoo._id" :tattoo="tattoo" @deleteTattoo="deleteTattoo" />
         </div>
     </div>
