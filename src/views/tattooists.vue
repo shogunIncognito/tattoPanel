@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { getTattooists } from '../services/api';
+import { toggleTattooistApprobation, getTattooists } from '../services/api';
 import { placeholderUserImage } from '../utils/consts'
 import BackButton from '../components/BackButton.vue';
 import { BiUserX } from 'vue-icons-plus/bi';
@@ -15,9 +15,8 @@ const router = useRouter()
 
 const disableTattooArtist = async (id) => {
     try {
-        await axios.patch(`/api/tattoo-artists/${id}/disable`); // Adjust endpoint
-        const artist = tattooArtists.value.find(artist => artist._id === id);
-        if (artist) artist.isVerified = false;
+        await toggleTattooistApprobation(id);
+        if (artist) artist.authorizedArtist = false;
     } catch (error) {
         console.error('Error disabling tattoo artist:', error);
     }
@@ -27,7 +26,6 @@ onMounted(() => {
     getTattooists()
         .then((res) => {
             console.log(res.data);
-
             tattooArtists.value = res.data;
         })
         .catch((error) => {
@@ -75,8 +73,8 @@ onMounted(() => {
                             <td class="p-3">{{ tattooist.numberPhone }}</td>
                             <td class="p-3">
                                 <span
-                                    :class="{ 'text-green-500': tattooist.isVerified, 'text-red-500': !tattooist.isVerified }">
-                                    {{ tattooist.isVerified ? 'Sí' : 'No' }}
+                                    :class="{ 'text-green-500': tattooist.authorizedArtist, 'text-red-500': !tattooist.authorizedArtist }">
+                                    {{ tattooist.authorizedArtist ? 'Sí' : 'No' }}
                                 </span>
                             </td>
                             <td class="p-3 text-center flex gap-2 justify-center">

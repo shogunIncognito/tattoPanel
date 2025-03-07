@@ -54,6 +54,12 @@ const routes = [
         name: 'dashboardTattooistsPending',
         component: () => import('../views/tattooistsPending.vue'),
         meta: { requiresAuth: true }
+    },
+    {
+        path: '/admin/create',
+        name: 'dashboardCreateAdmin',
+        component: () => import('../views/createAdmin.vue'),
+        meta: { requiresAuth: true }
     }
 ];
 

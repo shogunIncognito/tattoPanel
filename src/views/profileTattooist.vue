@@ -1,15 +1,15 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { BiTrash, BiUserX } from 'vue-icons-plus/bi';
-import { getTattooistPosts } from '../services/api';
+import { BiUserX } from 'vue-icons-plus/bi';
+import { getTattooistPosts, toggleTattooistApprobation } from '../services/api';
 import Spinner from '../components/Spinner.vue';
 import { placeholderUserImage } from '../utils/consts';
 import { useRoute, useRouter } from 'vue-router';
-import { AiFillStar } from 'vue-icons-plus/ai';
 import { Io5ArrowBackOutline } from 'vue-icons-plus/io5';
 import { deleteTattooPost } from '../services/api'
 import { toast } from 'vue3-toastify';
 import TattooCard from '../components/TattooCard.vue';
+import { FaUserCheck } from 'vue-icons-plus/fa';
 
 const tattooist = ref(null);
 const tattoos = ref([]);
@@ -18,7 +18,15 @@ const route = useRoute();
 const router = useRouter();
 
 const suspendTattooist = () => {
-    console.log(`User ${user.value.id} suspended.`);
+    toggleTattooistApprobation(tattooist.value._id)
+        .then(() => {
+            toast.success(`Tatuador ${tattooist.value.authorizedArtist ? 'suspendido' : 'aprobado'} correctamente.`);
+            tattooist.value.authorizedArtist = !tattooist.value.authorizedArtist;
+        })
+        .catch((error) => {
+            console.error('Error suspending tattooist:', error);
+            toast.error('Error al suspender el tatuador.');
+        });
 };
 
 const deleteTattoo = (tattoPostId) => {
@@ -36,10 +44,8 @@ const deleteTattoo = (tattoPostId) => {
 onMounted(() => {
     getTattooistPosts(route.params.id)
         .then((res) => {
-            console.log(res.data);
-
-            // tattooist.value = res.data[0].tattooist;
-            tattoos.value = res.data;
+            tattooist.value = res.data.tattooArtist;
+            tattoos.value = res.data.posts;
         })
         .catch((error) => {
             console.error('Error fetching user tattoos:', error);
@@ -70,14 +76,34 @@ onMounted(() => {
                     class="w-20 h-20 rounded-full border-4 border-gray-700">
                 <div>
                     <h2 class="text-xl font-bold">{{ tattooist.name }}</h2>
-                    <p class="text-gray-400">{{ tattooist.email }}</p>
                 </div>
+
                 <div class="ml-auto flex gap-4">
                     <button @click="suspendTattooist"
-                        class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg flex items-center gap-2">
-                        <BiUserX /> Suspender
+                        :class="(tattooist.authorizedArtist ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700') + ' px-4 py-2 rounded-lg flex items-center gap-2'">
+                        <span v-if="tattooist.authorizedArtist" class="flex items-center gap-2">
+                            <BiUserX /> Suspender
+                        </span>
+                        <span v-else class="flex items-center gap-2">
+                            <FaUserCheck /> Aprobar
+                        </span>
                     </button>
                 </div>
+            </div>
+            <div class="px-4 mt-4 space-y-1">
+                <p class="text-gray-100">Correo: {{ tattooist.email }}</p>
+                <p class="text-gray-100">Teléfono: {{ tattooist.numberPhone }}</p>
+                <p class="text-gray-100">Especialidad: {{ tattooist.specialty }}</p>
+                <p class="text-gray-100">Experiencia: {{ tattooist.experience }}</p>
+                <p class="text-gray-100">Dirección: {{ tattooist.address }}</p>
+                <div class="my-2">
+                    <p class="text-gray-100">Redes sociales:</p>
+                    <p v-for="(social, key) in tattooist.socialNetworks" :key="key" class="pl-2">
+                        {{ key + ':' + social }}
+                    </p>
+                </div>
+                <p class="text-gray-100">Horario: {{ tattooist.schedule }}</p>
+                <p class="text-gray-100">Descripción: {{ tattooist.description }}</p>
             </div>
         </div>
 

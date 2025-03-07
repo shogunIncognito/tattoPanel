@@ -9,6 +9,7 @@ import { AiFillStar } from 'vue-icons-plus/ai';
 import { Io5ArrowBackOutline } from 'vue-icons-plus/io5';
 import { deleteReview } from '../services/api'
 import { toast } from 'vue3-toastify';
+import { FaUserCheck } from 'vue-icons-plus/fa';
 
 const user = ref(null);
 const reviews = ref([]);
@@ -17,7 +18,15 @@ const route = useRoute();
 const router = useRouter();
 
 const suspendUser = () => {
-    console.log(`User ${user.value.id} suspended.`);
+    toggleTattooistApprobation(user.value._id)
+        .then(() => {
+            toast.success(`Usuario ${user.value.authorizedArtist ? 'suspendido' : 'aprobado'} correctamente.`);
+            user.value.authorizedArtist = !user.value.authorizedArtist;
+        })
+        .catch((error) => {
+            console.error('Error suspending user:', error);
+            toast.error('Error al suspender el usuario.');
+        });
 };
 
 const deleteUserReview = (reviewId) => {
@@ -35,8 +44,8 @@ const deleteUserReview = (reviewId) => {
 onMounted(() => {
     getUserReviews(route.params.id)
         .then((res) => {
-            user.value = res.data[0].user;
-            reviews.value = res.data;
+            user.value = res.data.user;
+            reviews.value = res.data.qualifications;
         })
         .catch((error) => {
             console.error('Error fetching user reviews:', error);
@@ -63,15 +72,20 @@ onMounted(() => {
                 class="w-full h-40 object-cover rounded-md">
             <div class="flex items-center gap-4 mt-4 px-4">
                 <img :src="user.photoPerfil?.url || placeholderUserImage" alt="Profile"
-                    class="w-20 h-20 rounded-full border-4 border-gray-700">
+                    class="w-20 h-20 object-cover rounded-full border-4 border-gray-700">
                 <div>
                     <h2 class="text-xl font-bold">{{ user.name }}</h2>
                     <p class="text-gray-400">{{ user.email }}</p>
                 </div>
                 <div class="ml-auto flex gap-4">
                     <button @click="suspendUser"
-                        class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg flex items-center gap-2">
-                        <BiUserX /> Suspender
+                        :class="(user.authorizedArtist ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700') + ' px-4 py-2 rounded-lg flex items-center gap-2'">
+                        <span v-if="user.authorizedArtist" class="flex items-center gap-2">
+                            <BiUserX /> Suspender
+                        </span>
+                        <span v-else class="flex items-center gap-2">
+                            <FaUserCheck /> Aprobar
+                        </span>
                     </button>
                 </div>
             </div>

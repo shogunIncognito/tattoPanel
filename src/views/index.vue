@@ -1,6 +1,7 @@
 <script setup>
 import { BiSolidCommentDetail, BiSolidPen, BiUser } from 'vue-icons-plus/bi';
 import { Fa6Users } from 'vue-icons-plus/fa6';
+import { GrSecure } from 'vue-icons-plus/gr';
 import { TbUserQuestion } from 'vue-icons-plus/tb';
 import { useRouter } from 'vue-router';
 
@@ -12,6 +13,7 @@ const stats = [
     { title: 'Tatuadores pendientes', count: 10, icon: TbUserQuestion, route: '/tattooists/pending' },
     { title: 'Tatuajes', count: 300, icon: BiSolidPen, route: '/tattoos' },
     { title: 'Reseñas', count: 150, icon: BiSolidCommentDetail, route: '/reviews' },
+    { title: 'Crear administrador', count: 1, icon: GrSecure, route: '/admin/create' }
 ];
 
 </script>

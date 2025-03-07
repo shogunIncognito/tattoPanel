@@ -32,13 +32,11 @@ const handleLogin = () => {
         });
 };
 
-const volver = () => {
-    router.push('/');
-};
 </script>
 
 <template>
-    <div class="bg-black min-h-screen flex justify-center items-center p-5">
+    <div class="bg-black flex-col min-h-[90dvh] flex justify-center items-center p-5">
+        <h2 class="text-white text-tatto text-[4rem] mb-5">Tattoo <span class="text-neon">Ink</span></h2>
         <div class="bg-[#1a1a1a] p-10 rounded-lg w-full max-w-md ring-neon">
             <h2 class="text-white text-center mb-8 text-2xl">
                 Iniciar
@@ -70,11 +68,6 @@ const volver = () => {
                 <button type="submit"
                     class="w-full p-3 bg-[#00c853] text-white rounded-md text-lg cursor-pointer transition hover:bg-[#555] hover:shadow-[0px_0px_10px_#33ff5850,0px_0px_40px_#33ff5850,0px_0px_60px_#33ff5850] mb-4">
                     Iniciar sesión
-                </button>
-
-                <button @click="volver" type="button"
-                    class="w-full p-3 bg-[#00c853] text-white rounded-md text-lg cursor-pointer transition hover:bg-[#555] hover:shadow-[0px_0px_10px_#33ff5850,0px_0px_40px_#33ff5850,0px_0px_60px_#33ff5850]">
-                    Volver
                 </button>
             </form>
         </div>

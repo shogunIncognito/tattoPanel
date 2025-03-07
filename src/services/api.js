@@ -125,3 +125,21 @@ export async function deleteTattooPost(id) {
         },
     });
 }
+
+// tattooists to verify
+
+export async function getTattooistsToVerify() {
+    return await API.get("/users-and-artist/get-artists-inauthorized/", {
+        headers: {
+            Authorization: `Bearer ${getToken()}`,
+        },
+    });
+}
+
+export async function toggleTattooistApprobation(id) {
+    return await API.post(`/users-and-artist/status-artist/${id}`, null, {
+        headers: {
+            Authorization: `Bearer ${getToken()}`,
+        },
+    });
+}
