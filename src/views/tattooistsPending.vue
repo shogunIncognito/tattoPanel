@@ -52,28 +52,28 @@ onMounted(() => {
         <div v-else-if="tattooists.length === 0" class="text-center my-20">
             <p class="text-xl">No hay tatuadores pendientes de autorizacion</p>
         </div>
-        <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div v-for="tattooist in tattooists" :key="tattooist._id"
                 class="bg-gray-800 flex flex-col p-4 rounded-lg shadow-lg">
-                <div class="flex items-center flex-col gap-4">
+                <div class="flex flex-col gap-4">
                     <img :src="placeholderUserImage" alt="Profile Image" class="w-16 h-16 rounded-full">
                     <div class="space-y-2">
                         <h2 class="text-2xl font-semibold">{{ tattooist.name }}</h2>
                         <p class="text-gray-200">Especialidad: {{ tattooist.specialty }}</p>
                         <p class="text-gray-200">Experiencia: {{ tattooist.experience }}</p>
                         <p class="text-gray-200">Correo: {{ tattooist.email }}</p>
-                        <div class="my-2">
-                            <p class="text-gray-200">Redes sociales:</p>
-                            <p v-for="(social, key) in tattooist.socialNetworks" :key="key" class="pl-2 text-gray-200">
-                                {{ key.charAt(0).toUpperCase() + key.slice(1) + ':' + social }}
-                            </p>
-                        </div>
                         <p v-if="tattooist.numberPhone" class="text-gray-200">Telefono: {{ tattooist.numberPhone }}</p>
                         <p v-if="tattooist.address" class="text-gray-200">Dirección: {{ tattooist.address }}</p>
                         <p v-if="tattooist.schedule" class="text-gray-200">Horario: {{ tattooist.schedule }}</p>
-                        <p v-if="tattooist.description" class="text-gray-200">Descripción: {{ tattooist.description }}
+                        <p v-if="tattooist.description" class="text-gray-200 max-w-xl">Descripción: {{
+                            tattooist.description }}
                         </p>
-
+                        <div class="my-2">
+                            <p class="text-gray-200 font-bold">Redes sociales:</p>
+                            <p v-for="(social, key) in tattooist.socialNetworks" :key="key" class="text-gray-200">
+                                {{ key.charAt(0).toUpperCase() + key.slice(1) + ': ' + social }}
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div class="flex justify-end gap-2 mt-4 items-end flex-1">
