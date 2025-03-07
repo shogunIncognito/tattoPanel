@@ -30,8 +30,6 @@ const toggleUserStatus = (id) => {
 onMounted(() => {
     getUsers()
         .then((res) => {
-            console.log(res.data);
-
             users.value = res.data;
         })
         .catch((error) => {

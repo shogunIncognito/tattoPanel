@@ -30,7 +30,6 @@ const rejectTattooist = (id) => {
 onMounted(() => {
     getTattooistsToVerify()
         .then((response) => {
-            console.log(response.data);
             tattooists.value = response.data;
         })
         .catch((error) => {

@@ -25,7 +25,6 @@ const deleteTattoo = (tattoPostId) => {
 onMounted(() => {
     getTattooPosts()
         .then((res) => {
-            console.log(res.data);
             tattoos.value = res.data;
         })
         .catch((error) => {
