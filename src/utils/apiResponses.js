@@ -7,4 +7,5 @@ export const apiResponses = {
     "User not found": "Correo y/o contraseña incorrectos",
     "Invalid password": "Correo y/o contraseña incorrectos",
     "User already qualified": "Ya has calificado a este artista",
+    "Password incorrect": "Contraseña incorrecta",
 }
