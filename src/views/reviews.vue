@@ -9,9 +9,11 @@ import { IpFileSearch } from 'vue-icons-plus/ip';
 import Spinner from '../components/Spinner.vue';
 import { AiFillStar } from 'vue-icons-plus/ai';
 import { LuUserSearch } from 'vue-icons-plus/lu';
+import { useRouter } from 'vue-router';
 
 const reviews = ref([]);
 const loading = ref(true);
+const router = useRouter();
 
 const removeReview = async (id) => {
     try {
@@ -27,7 +29,6 @@ onMounted(() => {
     getReviews()
         .then((res) => {
             console.log(res.data);
-
             reviews.value = res.data;
         })
         .catch((error) => {
@@ -66,13 +67,14 @@ onMounted(() => {
                         <tr v-else v-for="review in reviews" :key="review._id" class="border-t border-gray-700">
                             <td class="p-3">{{ review.user.name }}</td>
                             <td class="p-3">{{ review.comment || '-' }}</td>
-                            <td class="p-3 flex gap-2">
+                            <td class="p-3 flex gap-2"
+                                :class="review.qualification >= 3 ? 'text-green-500' : 'text-red-500'">
                                 <AiFillStar class="text-yellow-500" />
                                 {{ review.qualification }}
                             </td>
                             <td class="p-3">{{ review.tattooArtist.name }}</td>
                             <td class="p-3 text-center flex gap-2 justify-center">
-                                <button @click="removeReview(review._id)"
+                                <button @click="router.push(`/users/${review.user._id}`)"
                                     class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded flex items-center gap-2">
                                     <LuUserSearch /> Ver usuario
                                 </button>

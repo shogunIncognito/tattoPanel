@@ -7,9 +7,11 @@ import BackButton from '../components/BackButton.vue';
 import { BiUserX } from 'vue-icons-plus/bi';
 import { IpFileSearch } from 'vue-icons-plus/ip';
 import Spinner from '../components/Spinner.vue';
+import { useRouter } from 'vue-router';
 
 const tattooArtists = ref([]);
 const loading = ref(true);
+const router = useRouter()
 
 const disableTattooArtist = async (id) => {
     try {
@@ -78,7 +80,7 @@ onMounted(() => {
                                 </span>
                             </td>
                             <td class="p-3 text-center flex gap-2 justify-center">
-                                <button @click="disableTattooArtist(tattooist._id)"
+                                <button @click="router.push(`/tattooists/${tattooist._id}`)"
                                     class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded flex items-center gap-2">
                                     <IpFileSearch /> Ver tatuajes
                                 </button>

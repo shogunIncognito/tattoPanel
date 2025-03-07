@@ -6,8 +6,9 @@ import Spinner from '../components/Spinner.vue';
 import { placeholderUserImage } from '../utils/consts';
 import { useRoute, useRouter } from 'vue-router';
 import { AiFillStar } from 'vue-icons-plus/ai';
-import BackButton from '../components/BackButton.vue';
 import { Io5ArrowBackOutline } from 'vue-icons-plus/io5';
+import { deleteReview } from '../services/api'
+import { toast } from 'vue3-toastify';
 
 const user = ref(null);
 const reviews = ref([]);
@@ -19,14 +20,21 @@ const suspendUser = () => {
     console.log(`User ${user.value.id} suspended.`);
 };
 
-const deleteReview = (reviewId) => {
-    user.value.reviews = user.value.reviews.filter(review => review.id !== reviewId);
+const deleteUserReview = (reviewId) => {
+    deleteReview(reviewId)
+        .then(() => {
+            toast.success('Reseña eliminada correctamente.');
+            reviews.value = reviews.value.filter((review) => review._id !== reviewId);
+        })
+        .catch((error) => {
+            console.error('Error deleting review:', error);
+            toast.error('Error al eliminar la reseña.');
+        });
 };
 
 onMounted(() => {
     getUserReviews(route.params.id)
         .then((res) => {
-            console.log(res.data);
             user.value = res.data[0].user;
             reviews.value = res.data;
         })
@@ -43,7 +51,7 @@ onMounted(() => {
     <div v-if="loading" class="flex justify-center items-center h-[70dvh]">
         <Spinner />
     </div>
-    <div v-else class="bg-gray-900 text-white min-h-screen p-6">
+    <div v-else class="bg-gray-900 text-white min-h-screen p-6 max-w-4xl mx-auto my-5 rounded-lg shadow-lg ring-neon">
         <div class="flex items-center gap-10 mb-6">
             <button @click="router.back()" class="text-[#00c853] hover:text-[#00e676] flex items-center gap-2">
                 <Io5ArrowBackOutline />
@@ -88,7 +96,7 @@ onMounted(() => {
                 <p class="text-gray-300 mt-4">{{ review.comment }}</p>
 
                 <div class="flex-1 justify-end mt-4 flex items-end gap-4">
-                    <BiTrash @click="deleteReview(review.id)" class="cursor-pointer text-red-500" />
+                    <BiTrash @click="deleteUserReview(review._id)" class="cursor-pointer text-red-500" />
                 </div>
             </div>
         </div>

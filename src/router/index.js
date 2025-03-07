@@ -41,6 +41,19 @@ const routes = [
         path: '/users/:id',
         name: 'dashboardUser',
         component: () => import('../views/profileUser.vue'),
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/tattooists/:id',
+        name: 'dashboardTattooist',
+        component: () => import('../views/profileTattooist.vue'),
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/tattooists/pending',
+        name: 'dashboardTattooistsPending',
+        component: () => import('../views/tattooistsPending.vue'),
+        meta: { requiresAuth: true }
     }
 ];
 

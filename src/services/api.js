@@ -84,7 +84,7 @@ export async function getReviewsOfTattooist(id) {
 }
 
 export async function deleteReview(id) {
-    return await API.delete(`/qualification-of-artist/delete-qualification-artist/${id}`, {
+    return await API.delete(`/qualification-of-artist/delete-qualification/${id}`, {
         headers: {
             Authorization: `Bearer ${getToken()}`,
         },
