@@ -145,3 +145,13 @@ export async function toggleUserApprobation(id) {
         },
     });
 }
+
+// home stats
+
+export async function getDataStats() {
+    return await API.get("/users-and-artist/get-length-data", {
+        headers: {
+            Authorization: `Bearer ${getToken()}`,
+        },
+    });
+}
