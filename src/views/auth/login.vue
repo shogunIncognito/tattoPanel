@@ -37,7 +37,7 @@ const handleLogin = () => {
 <template>
     <div class="bg-black flex-col min-h-[90dvh] flex justify-center items-center p-5">
         <h2 class="text-white text-tatto text-[4rem] mb-5">Tattoo <span class="text-neon">Ink</span></h2>
-        <div class="bg-[#1a1a1a] p-10 rounded-lg w-full max-w-md ring-neon">
+        <div class="bg-gray-900 p-10 rounded-lg w-full max-w-md ring-neon">
             <h2 class="text-white text-center mb-8 text-2xl">
                 Iniciar
                 <span class="text-neon">sesión</span>
