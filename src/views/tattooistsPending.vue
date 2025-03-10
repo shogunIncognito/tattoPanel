@@ -23,10 +23,6 @@ const handleApprove = (id) => {
         });
 };
 
-const rejectTattooist = (id) => {
-    tattooists.value = tattooists.value.filter(t => t._id !== id);
-};
-
 onMounted(() => {
     getTattooistsToVerify()
         .then((response) => {
@@ -79,10 +75,6 @@ onMounted(() => {
                     <button @click="handleApprove(tattooist._id)"
                         class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg flex items-center gap-2">
                         <BiCheckCircle /> Aprobar
-                    </button>
-                    <button @click="rejectTattooist(tattooist._id)"
-                        class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg flex items-center gap-2">
-                        <BiXCircle /> Rechazar
                     </button>
                 </div>
             </div>
