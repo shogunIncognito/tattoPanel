@@ -73,7 +73,7 @@ onMounted(() => {
                                 <AiFillStar class="text-yellow-500" />
                                 {{ review.qualification }}
                             </td>
-                            <td class="p-3">{{ review.tattooArtist.name }}</td>
+                            <td class="p-3">{{ review.tattooArtist?.name }}</td>
                             <td class="p-3 text-center flex gap-2 justify-center">
                                 <button @click="router.push(`/users/${review.user._id}`)"
                                     class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded flex items-center gap-2">
