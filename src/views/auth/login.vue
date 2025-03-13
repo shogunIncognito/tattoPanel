@@ -6,6 +6,7 @@ import { toast } from 'vue3-toastify';
 import { getApiErrorMessage } from '../../utils/functions';
 import { useAuthStore } from '../../store/useAuthStore';
 import { loginAdmin } from '../../services/api';
+import Spinner from '../../components/Spinner.vue';
 
 const router = useRouter();
 const { setSession } = useAuthStore();
@@ -14,10 +15,12 @@ const user = ref({
     user: '',
     password: '',
 });
+const loading = ref(false);
 
 const showPassword = ref(false);
 
 const handleLogin = () => {
+    loading.value = true;
     loginAdmin(user.value)
         .then(async (res) => {
             toast.success('Inicio de sesión exitoso');
@@ -29,6 +32,9 @@ const handleLogin = () => {
             toast.error(getApiErrorMessage(error.response.data.message) || 'Error al iniciar sesión', {
                 autoClose: 5000,
             });
+        })
+        .finally(() => {
+            loading.value = false;
         });
 };
 
@@ -65,9 +71,10 @@ const handleLogin = () => {
                     </div>
                 </div>
 
-                <button type="submit"
-                    class="w-full p-3 bg-[#00c853] text-white rounded-md text-lg cursor-pointer transition hover:bg-[#555] hover:shadow-[0px_0px_10px_#33ff5850,0px_0px_40px_#33ff5850,0px_0px_60px_#33ff5850] mb-4">
-                    Iniciar sesión
+                <button :disabled="loading" type="submit"
+                    class="w-full p-3 disabled:bg-gray-500 bg-[#00c853] text-white rounded-md flex justify-center items-center text-lg cursor-pointer transition hover:bg-[#555] hover:shadow-[0px_0px_10px_#33ff5850,0px_0px_40px_#33ff5850,0px_0px_60px_#33ff5850] mb-4">
+                    <Spinner v-if="loading" class="h-7" />
+                    <span v-else>Iniciar sesión</span>
                 </button>
             </form>
         </div>

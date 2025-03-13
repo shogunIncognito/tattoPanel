@@ -1,6 +1,5 @@
 <script setup>
 import { CgSpinnerAlt } from 'vue-icons-plus/cg';
-
 </script>
 
 <template>

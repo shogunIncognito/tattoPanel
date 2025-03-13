@@ -41,37 +41,32 @@ onMounted(() => {
         <BackButton />
         <h2 class="text-2xl font-bold mb-4">Gestionar Tatuajes</h2>
         <div class="bg-gray-900 p-2 rounded-lg shadow-md ring-neon">
-            <div class="overflow-x-auto">
+            <div v-if="loading" class="flex justify-center items-center h-[18rem]">
+                <Spinner />
+            </div>
+            <div v-else class="overflow-x-auto">
                 <table class="w-full border border-gray-700">
                     <thead class="bg-gray-800">
                         <tr>
-                            <th class="p-3 text-left">Foto</th>
-                            <th class="p-3 text-left">Descripcion</th>
-                            <th class="p-3 text-center">Acción</th>
+                            <th class="p-3 text-left w-1/4 min-w-[120px]">Foto</th>
+                            <th class="p-3 text-left w-3/4">Descripción</th>
+                            <th class="p-3 text-center w-40">Acción</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-if="loading" class="h-[18rem]">
-                            <td colspan="6" class="text-center">
-                                <div class="flex justify-center items-center h-full">
-                                    <Spinner />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr v-else-if="!tattoos.length" class="border-t border-gray-700">
-                            <td colspan="3" class="text-center p-3">No hay tatuajes para mostrar.</td>
-                        </tr>
-                        <tr v-else v-for="tattoo in tattoos" :key="tattoo._id" class="border-t border-gray-700">
-                            <td class="p-3">
+                        <tr v-for="tattoo in tattoos" :key="tattoo._id" class="border-t border-gray-700">
+                            <td class="p-3 w-1/4 min-w-[120px]">
                                 <img :src="tattoo.images[0]?.url || placeholderUserImage" alt="Foto del tatuaje"
-                                    class="w-24 h-24 object-cover rounded" />
+                                    class="w-32 h-32 object-cover rounded" />
                             </td>
-                            <td class="p-3">{{ tattoo.description || '-' }}</td>
-                            <td class="p-3 text-center items-center h-[8rem] flex gap-2 justify-center">
-                                <button @click="deleteTattoo(tattoo._id)"
-                                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded flex items-center gap-2">
-                                    <AiFillDelete /> Eliminar tatuaje
-                                </button>
+                            <td class="p-3 w-3/4">{{ tattoo.description || '-' }}</td>
+                            <td class="p-3 w-40">
+                                <div class="flex justify-center items-center h-full">
+                                    <button @click="deleteTattoo(tattoo._id)"
+                                        class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded flex items-center gap-2">
+                                        <AiFillDelete /> Eliminar
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
