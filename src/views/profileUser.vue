@@ -60,7 +60,8 @@ onMounted(() => {
     <div v-if="loading" class="flex justify-center items-center h-[70dvh]">
         <Spinner />
     </div>
-    <div v-else class="bg-gray-900 text-white min-h-screen p-6 max-w-4xl mx-auto my-5 rounded-lg shadow-lg ring-neon">
+    <div v-else
+        class="bg-gray-900 text-white min-h-screen p-6 max-w-4xl md:mx-auto mx-2 my-5 rounded-lg shadow-lg ring-neon">
         <div class="flex items-center gap-10 mb-6">
             <button @click="router.back()" class="text-[#00c853] hover:text-[#00e676] flex items-center gap-2">
                 <Io5ArrowBackOutline />
@@ -70,14 +71,14 @@ onMounted(() => {
         <div class="relative bg-gray-800 rounded-lg shadow-lg p-4 ring-neon">
             <img :src="user.photoBackground?.url || placeholderUserImage" alt="Banner"
                 class="w-full h-40 object-cover rounded-md">
-            <div class="flex items-center gap-4 mt-4 px-4">
+            <div class="flex items-center flex-col md:flex-row gap-4 mt-4 px-4">
                 <img :src="user.photoPerfil?.url || placeholderUserImage" alt="Profile"
                     class="w-20 h-20 object-cover rounded-full border-4 border-gray-700">
                 <div>
                     <h2 class="text-xl font-bold">{{ user.name }}</h2>
                     <p class="text-gray-400">{{ user.email }}</p>
                 </div>
-                <div class="ml-auto flex gap-4">
+                <div class="md:ml-auto flex gap-4">
                     <button @click="suspendUser"
                         :class="(user.isVerified ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700') + ' px-4 py-2 rounded-lg flex items-center gap-2'">
                         <span v-if="user.isVerified" class="flex items-center gap-2">

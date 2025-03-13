@@ -58,6 +58,9 @@ onMounted(() => {
                                 </div>
                             </td>
                         </tr>
+                        <tr v-else-if="!tattoos.length" class="border-t border-gray-700">
+                            <td colspan="3" class="text-center p-3">No hay tatuajes para mostrar.</td>
+                        </tr>
                         <tr v-else v-for="tattoo in tattoos" :key="tattoo._id" class="border-t border-gray-700">
                             <td class="p-3">
                                 <img :src="tattoo.images[0]?.url || placeholderUserImage" alt="Foto del tatuaje"

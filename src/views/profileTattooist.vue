@@ -71,14 +71,14 @@ onMounted(() => {
         <div v-if="tattooist" class="relative bg-gray-800 rounded-lg shadow-lg p-4 ring-neon">
             <img :src="tattooist.photoBackground?.url || placeholderUserImage" alt="Banner"
                 class="w-full h-40 object-cover rounded-md">
-            <div class="flex items-center gap-4 mt-4 px-4">
+            <div class="flex md:flex-row flex-col items-center gap-4 mt-4 px-4">
                 <img :src="tattooist.photoPerfil?.url || placeholderUserImage" alt="Profile"
                     class="w-20 h-20 rounded-full border-4 border-gray-700">
                 <div>
                     <h2 class="text-xl font-bold">{{ tattooist.name }}</h2>
                 </div>
 
-                <div class="ml-auto flex gap-4">
+                <div class="md:ml-auto flex gap-4">
                     <button @click="suspendTattooist"
                         :class="(tattooist.authorizedArtist ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700') + ' px-4 py-2 rounded-lg flex items-center gap-2'">
                         <span v-if="tattooist.authorizedArtist" class="flex items-center gap-2">
@@ -96,10 +96,11 @@ onMounted(() => {
                 <p class="text-gray-100">Especialidad: {{ tattooist.specialty }}</p>
                 <p class="text-gray-100">Experiencia: {{ tattooist.experience }}</p>
                 <p class="text-gray-100">Dirección: {{ tattooist.address }}</p>
-                <div class="my-2">
+                <div class="my-2 break-words">
                     <p class="text-gray-100">Redes sociales:</p>
-                    <p v-for="(social, key) in tattooist.socialNetworks" :key="key" class="pl-2">
-                        {{ key + ':' + social }}
+                    <p v-for="(social, key) in tattooist.socialNetworks" :key="key" class="">
+                        <span class="font-bold capitalize">{{ key }}:</span>
+                        <span>{{ social }}</span>
                     </p>
                 </div>
                 <p class="text-gray-100">Horario: {{ tattooist.schedule }}</p>
