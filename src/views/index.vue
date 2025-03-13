@@ -6,21 +6,26 @@ import { GrSecure } from 'vue-icons-plus/gr';
 import { TbUserQuestion } from 'vue-icons-plus/tb';
 import { useRouter } from 'vue-router';
 import { getDataStats } from '../services/api';
+import { useAuthStore } from '../store/useAuthStore';
 
 const router = useRouter();
+const authStore = useAuthStore();
 
-const stats = [
+const stats = ref([
     { title: 'Usuarios', count: 0, icon: Fa6Users, route: '/users', key: 'lengthUsers' },
     { title: 'Tatuadores', count: 0, icon: BiUser, route: '/tattooists', key: 'lengthArtists' },
     { title: 'Tatuadores pendientes', count: 0, icon: TbUserQuestion, route: '/tattooists/pending', key: 'lengthArtistsInauthorized' },
     { title: 'Tatuajes', count: 0, icon: BiSolidPen, route: '/tattoos', key: 'lengthPosts' },
     { title: 'Reseñas', count: 0, icon: BiSolidCommentDetail, route: '/reviews', key: 'lengthQualification' },
-    { title: 'Crear administrador', count: 0, icon: GrSecure, route: '/admins/create', key: 'lengthAdmins' },
     { title: 'Administradores', count: 0, icon: Fa6UserShield, route: '/admins', key: 'lengthAdmins' }
-];
+]);
 const dataStats = ref({});
 
 onMounted(() => {
+    if (authStore.user.user === 'firstAdmin') {
+        stats.value.push({ title: 'Crear administrador', count: 0, icon: GrSecure, route: '/admins/create', key: 'lengthAdmins' });
+    }
+
     getDataStats()
         .then((res) => {
             dataStats.value = res.data;
@@ -39,7 +44,7 @@ onMounted(() => {
                 <div v-for="stat in stats" :key="stat.title" @click="router.push(stat.route)"
                     class="bg-gray-900 p-4 rounded-lg shadow-md flex flex-col items-center justify-center cursor-pointer hover:bg-gray-700 transition-all">
                     <component :is="stat.icon" class="text-green-400 text-4xl" />
-                    <h2 class="text-xl font-semibold mt-2">{{ stat.title }}</h2>
+                    <h2 class="text-xl font-semibold mt-2 text-center">{{ stat.title }}</h2>
                     <p class="text-lg text-green-400 font-bold">{{ dataStats[stat.key] || 0 }}</p>
                 </div>
             </div>

@@ -17,8 +17,9 @@ const logout = () => {
 
 <template>
     <nav class="bg-gray-900 text-white p-4 shadow-lg ring-neon flex justify-between items-center sticky top-0 z-50">
-        <div class="text-xl font-bold overflow-hidden whitespace-nowrap text-ellipsis">
-            Tattoo <span class="text-neon">Ink</span> - Panel de administración
+        <div class="text-xl font-bold overflow-hidden whitespace-nowrap text-ellipsis flex items-center gap-2">
+            <span style="font-size: 26px;" class="text-tatto">Tattoo <span class="text-neon">Ink</span> </span>
+            <span class="md:block hidden">- Panel de administración</span>
         </div>
         <button @click="isMenuOpen = !isMenuOpen" class="md:hidden focus:outline-none text-2xl">
             <BiMenu />

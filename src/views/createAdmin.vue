@@ -1,12 +1,16 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import BackButton from '../components/BackButton.vue';
 import { createAdmin } from '../services/api';
 import { toast } from 'vue3-toastify';
 import { getApiErrorMessage } from '../utils/functions';
+import { useAuthStore } from '../store/useAuthStore';
+import { useRouter } from 'vue-router';
 
 const user = ref('');
 const password = ref('');
+const authStore = useAuthStore();
+const router = useRouter();
 
 const addAdmin = () => {
     createAdmin({ user: user.value, password: password.value })
@@ -20,6 +24,12 @@ const addAdmin = () => {
             toast.error(getApiErrorMessage(error.response.data.message) || 'Error al añadir administrador.');
         });
 };
+
+onMounted(() => {
+    if (authStore.user.user !== 'firstAdmin') {
+        router.push('/');
+    }
+})
 
 </script>
 

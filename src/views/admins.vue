@@ -7,9 +7,11 @@ import { BiUserX } from 'vue-icons-plus/bi';
 import Spinner from '../components/Spinner.vue';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
+import { useAuthStore } from '../store/useAuthStore';
 
 const admins = ref([]);
 const loading = ref(true);
+const authStore = useAuthStore();
 
 const handleDeleteAdmin = async (id) => {
     try {
@@ -25,8 +27,6 @@ const handleDeleteAdmin = async (id) => {
 onMounted(() => {
     getAdmins()
         .then((res) => {
-            console.log(res.data);
-
             admins.value = res.data;
         })
         .catch((error) => {
@@ -49,7 +49,7 @@ onMounted(() => {
                         <tr>
                             <th class="p-3 text-left">Foto</th>
                             <th class="p-3 text-left">Nombre</th>
-                            <th class="p-3 text-center">Acciones</th>
+                            <th class="p-3 text-center" v-if="authStore.user.user === 'firstAdmin'">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,7 +66,7 @@ onMounted(() => {
                                     class="w-10 h-10 rounded-full">
                             </td>
                             <td class="p-3">{{ admin.user }}</td>
-                            <td class="p-3 text-center">
+                            <td class="p-3 text-center" v-if="authStore.user.user === 'firstAdmin'">
                                 <button @click="handleDeleteAdmin(admin._id)"
                                     class="p-2 bg-red-500 rounded-lg hover:bg-red-600">
                                     <BiUserX class="w-6 h-6" />
