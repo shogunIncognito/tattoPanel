@@ -57,6 +57,22 @@ export async function createAdmin(data) {
     });
 }
 
+export async function getAdmins() {
+    return await API.get("/auth-admin/get-admins", {
+        headers: {
+            Authorization: `Bearer ${getToken()}`,
+        },
+    });
+}
+
+export async function deleteAdmin(id) {
+    return await API.delete(`/auth-admin/delete-admin/${id}`, {
+        headers: {
+            Authorization: `Bearer ${getToken()}`,
+        },
+    });
+}
+
 // reviews
 
 export async function getReviews() {

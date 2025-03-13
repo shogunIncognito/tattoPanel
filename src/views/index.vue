@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { BiSolidCommentDetail, BiSolidPen, BiUser } from 'vue-icons-plus/bi';
-import { Fa6Users } from 'vue-icons-plus/fa6';
+import { Fa6Users, Fa6UserShield } from 'vue-icons-plus/fa6';
 import { GrSecure } from 'vue-icons-plus/gr';
 import { TbUserQuestion } from 'vue-icons-plus/tb';
 import { useRouter } from 'vue-router';
@@ -15,7 +15,8 @@ const stats = [
     { title: 'Tatuadores pendientes', count: 0, icon: TbUserQuestion, route: '/tattooists/pending', key: 'lengthArtistsInauthorized' },
     { title: 'Tatuajes', count: 0, icon: BiSolidPen, route: '/tattoos', key: 'lengthPosts' },
     { title: 'Reseñas', count: 0, icon: BiSolidCommentDetail, route: '/reviews', key: 'lengthQualification' },
-    { title: 'Crear administrador', count: 0, icon: GrSecure, route: '/admin/create', key: 'lengthAdmins' },
+    { title: 'Crear administrador', count: 0, icon: GrSecure, route: '/admins/create', key: 'lengthAdmins' },
+    { title: 'Administradores', count: 0, icon: Fa6UserShield, route: '/admins', key: 'lengthAdmins' }
 ];
 const dataStats = ref({});
 

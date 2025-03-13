@@ -8,7 +8,6 @@ import BackButton from '../components/BackButton.vue';
 import { toast } from 'vue3-toastify';
 
 const tattooists = ref([]);
-
 const loading = ref(true);
 
 const handleApprove = (id) => {

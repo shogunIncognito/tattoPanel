@@ -12,6 +12,8 @@ const addAdmin = () => {
     createAdmin({ user: user.value, password: password.value })
         .then(() => {
             toast.success('Administrador añadido correctamente.');
+            user.value = '';
+            password.value = '';
         })
         .catch((error) => {
             console.error('Error adding admin:', error);
