@@ -65,6 +65,11 @@ onMounted(() => {
                                 </div>
                             </td>
                         </tr>
+                        <tr v-else-if="!reviews.length" class="text-center p-6">
+                            <td colspan="6">
+                                <p class="text-lg">No hay reseñas para mostrar.</p>
+                            </td>
+                        </tr>
                         <tr v-else v-for="review in reviews" :key="review._id" class="border-t border-gray-700">
                             <td class="p-3">{{ review.user.name }}</td>
                             <td class="p-3">{{ review.comment || '-' }}</td>

@@ -8,12 +8,15 @@ import Spinner from '../components/Spinner.vue';
 import { placeholderUserImage } from '../utils/consts'
 import { useRouter } from 'vue-router';
 import { FaUserCheck } from 'vue-icons-plus/fa';
+import { toast } from 'vue3-toastify';
 
 const users = ref([]);
 const loading = ref(true)
 const router = useRouter();
+const isToggleloading = ref(false);
 
 const toggleUserStatus = (id) => {
+    isToggleloading.value = true;
     toggleUserApprobation(id)
         .then((res) => {
             const newText = res.data.isVerified ? 'suspendido' : 'aprobado';
@@ -24,6 +27,9 @@ const toggleUserStatus = (id) => {
         .catch((error) => {
             console.error('Error suspending user:', error);
             toast.error('Error al suspender el usuario.');
+        })
+        .finally(() => {
+            isToggleloading.value = false;
         });
 };
 
@@ -84,8 +90,8 @@ onMounted(() => {
                                     class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-2 rounded flex items-center gap-2">
                                     <IpFileSearch /> Ver reseñas
                                 </button>
-                                <button @click="toggleUserStatus(user._id)"
-                                    :class="(user.isVerified ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700') + ' px-4 py-2 rounded-lg flex items-center gap-2'">
+                                <button @click="toggleUserStatus(user._id)" :disabled="isToggleloading"
+                                    :class="(user.isVerified ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700') + ' px-4 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50'">
                                     <span v-if="user.isVerified" class="flex items-center gap-2">
                                         <BiUserX /> Deshabilitar
                                     </span>

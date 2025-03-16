@@ -5,7 +5,6 @@ import { placeholderUserImage } from '../utils/consts'
 import BackButton from '../components/BackButton.vue';
 import { BiUserX } from 'vue-icons-plus/bi';
 import Spinner from '../components/Spinner.vue';
-import { useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
 import { useAuthStore } from '../store/useAuthStore';
 

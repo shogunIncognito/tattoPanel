@@ -14,9 +14,11 @@ import { toast } from 'vue3-toastify';
 const tattooArtists = ref([]);
 const loading = ref(true);
 const router = useRouter()
+const isToggleloading = ref(false);
 
 const disableTattooArtist = async (id) => {
     try {
+        isToggleloading.value = true;
         const res = await toggleTattooistApprobation(id);
         const newText = res.data.authorizedArtist ? 'habilitado' : 'suspendido';
         toast.success(`Tatuador ${newText} correctamente.`);
@@ -24,6 +26,8 @@ const disableTattooArtist = async (id) => {
         tattooArtists.value[tattooArtistIndex].authorizedArtist = !tattooArtists.value[tattooArtistIndex].authorizedArtist;
     } catch (error) {
         console.error('Error disabling tattoo artist:', error);
+    } finally {
+        isToggleloading.value = false;
     }
 };
 
@@ -86,8 +90,8 @@ onMounted(() => {
                                     class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded flex items-center gap-2">
                                     <IpFileSearch /> Ver tatuajes
                                 </button>
-                                <button @click="disableTattooArtist(tattooist._id)"
-                                    :class="(tattooist.authorizedArtist ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700') + ' px-4 py-2 rounded-lg flex items-center gap-2'">
+                                <button @click="disableTattooArtist(tattooist._id)" :disabled="isToggleloading"
+                                    :class="(tattooist.authorizedArtist ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700') + ' px-4 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50'">
                                     <span v-if="tattooist.authorizedArtist" class="flex items-center gap-2">
                                         <BiUserX /> Deshabilitar
                                     </span>

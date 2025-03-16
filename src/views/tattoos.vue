@@ -44,6 +44,9 @@ onMounted(() => {
             <div v-if="loading" class="flex justify-center items-center h-[18rem]">
                 <Spinner />
             </div>
+            <div v-else-if="!tattoos.length" class="text-center p-6">
+                <p class="text-lg">No hay tatuajes para mostrar.</p>
+            </div>
             <div v-else class="overflow-x-auto">
                 <table class="w-full border border-gray-700">
                     <thead class="bg-gray-800">
