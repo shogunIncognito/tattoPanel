@@ -152,6 +152,14 @@ export async function toggleTattooistApprobation(id) {
     });
 }
 
+export async function denyTattooistApprobation(id) {
+    return await API.delete(`/users-and-artist/delete-artist/${id}`, {
+        headers: {
+            Authorization: `Bearer ${getToken()}`,
+        },
+    });
+}
+
 // user aprobation
 
 export async function toggleUserApprobation(id) {

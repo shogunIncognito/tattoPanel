@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { BiCheckCircle, BiXCircle } from 'vue-icons-plus/bi';
 import { placeholderUserImage } from '../utils/consts';
 import Spinner from '../components/Spinner.vue';
-import { toggleTattooistApprobation, getTattooistsToVerify } from '../services/api';
+import { toggleTattooistApprobation, getTattooistsToVerify, denyTattooistApprobation } from '../services/api';
 import BackButton from '../components/BackButton.vue';
 import { toast } from 'vue3-toastify';
 
@@ -18,8 +18,18 @@ const handleApprove = (id) => {
         })
         .catch((error) => {
             console.error(error);
-            toast.error('Error al aprobar el tatuador');
         });
+};
+
+const handleDisapprove = async (id) => {
+    try {
+        tattooists.value = tattooists.value.filter(t => t._id !== id);
+        toast.success('Tatuador rechazado correctamente');
+        await denyTattooistApprobation(id)
+    } catch (error) {
+        console.error(error);
+        toast.error('Error al rechazar el tatuador');
+    }
 };
 
 onMounted(() => {
@@ -70,10 +80,14 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
-                <div class="flex justify-end gap-2 mt-4 items-end flex-1">
+                <div class="flex justify-end gap-2 mt-4 lg:items-end flex-1 flex-col lg:flex-row items-center">
                     <button @click="handleApprove(tattooist._id)"
-                        class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg flex items-center gap-2">
+                        class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg flex items-center gap-2 w-full lg:w-auto">
                         <BiCheckCircle /> Aprobar
+                    </button>
+                    <button @click="handleDisapprove(tattooist._id)"
+                        class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg flex items-center gap-2 w-full lg:w-auto">
+                        <BiXCircle /> Rechazar
                     </button>
                 </div>
             </div>
