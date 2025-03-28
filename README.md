@@ -1,5 +1,33 @@
-# Vue 3 + Vite
+# TattooPanel
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Panel de administración para la aplicación TattooInk. Permite gestionar usuarios, tatuadores y sus portafolios, así como supervisar el cumplimiento de normas dentro de la plataforma.  
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+### Tecnologías utilizadas  
+- **Vue.js 3**: Framework progresivo de JavaScript para construir interfaces de usuario.  
+- **Tailwind CSS**: Framework de CSS para diseñar interfaces rápidamente con clases utilitarias.  
+
+## Clonar repositorio  
+
+## Acceder al proyecto  
+```bash
+cd tattoopanel
+```
+
+## Instalar dependencias  
+```bash
+npm install
+# o
+yarn install
+```
+
+## Iniciar el proyecto  
+```bash
+npm run dev
+```
+# o
+```bash
+yarn run dev
+```
+
+### Acceder a la aplicación  
+Abre tu navegador y visita [http://localhost:5173](http://localhost:5173) para utilizar el panel de administración.  
