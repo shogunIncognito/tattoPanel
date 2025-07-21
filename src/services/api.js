@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-    baseURL: "https://tattoo-inc-62j4s.ondigitalocean.app/api",
+    baseURL: "https://tatto-ink-server-568b89adc0b9.herokuapp.com/api",
 })
 
 const getToken = () => localStorage.getItem("token");
